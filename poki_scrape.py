@@ -10,16 +10,18 @@ with open('pokedex.csv', 'w') as f:
     url = 'https://www.pokemon.com/us/pokedex/bulbasaur'
     while True:
         rows = []
-
+        
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
         divs = soup.find('div', 'pokedex-pokemon-pagination-title')
         rows.append(divs.div.text.split()[0])
-        
+        num = divs.div.text.split()[1]
+
         description = soup.find('p', 'version-x')
         rows.append(description.text.strip())
         
-        attributes = soup.find_all('span', 'attribute-title')
+        attributes = soup.find('div', 'pokemon-ability-info')
+        attributes = attributes.find_all('span', 'attribute-title')
         for el in attributes:
             rows.append(el.parent.find('span', 'attribute-value').string)
         
@@ -35,5 +37,5 @@ with open('pokedex.csv', 'w') as f:
         
         if url == 'https://www.pokemon.com/us/pokedex/bulbasaur':
             break
-        print(f'-->{rows[0]}')
+        print(f'{num}-->{rows[0]}')
         
