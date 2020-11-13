@@ -192,4 +192,4 @@ images/
 images1/
 
 # End of https://www.gitignore.io/api/code,python
-#
+.vscode/
